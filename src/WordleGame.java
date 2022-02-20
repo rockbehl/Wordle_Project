@@ -28,12 +28,13 @@ public class WordleGame {
             }
 
             String CW = Dictionary.get(rand.nextInt(Dictionary.size()));
-            System.out.println(CW);
+            //System.out.println(CW);
 
             System.out.println();
             setup();
 
-            while (turns < (board[0].length+1)) {
+            while (turns < (board[0].length-1)) {
+                //System.out.println(CW);
                 userInterface(CW);
                 display();
                 if (win){
@@ -41,14 +42,23 @@ public class WordleGame {
                 }
                 turns++;
             }
+            if (!win){
+                System.out.println();
+                System.out.println("-=-=-=- The word was: "+CW+" -=-=-=-");
+            }
 
         }
 
-        public void userInterface(String CW){
+        public void userInterface(String CW) {
             Scanner sc = new Scanner(System.in);
 
             System.out.print("Enter Guess: ");
             String userGuess = sc.nextLine();
+            while (!Dictionary.contains(userGuess) || userGuess.length() != 5){
+                System.out.println("Word not in list!");
+                System.out.print("Try Again: ");
+                userGuess = sc.nextLine();
+            }
             check(userGuess, CW);
             userGuess = userGuess.toUpperCase();
             char[] uc = userGuess.toCharArray();
@@ -69,7 +79,7 @@ public class WordleGame {
 
             for (int i = 0; i < indicators.length; i++) {
                 for (int j = 0; j < indicators.length; j++) {
-                    indicators[j][i] = "⬜️";
+                    indicators[j][i] = "🆓️";
                 }
             }
 
@@ -108,32 +118,22 @@ public class WordleGame {
                 }
                 win = true;
             } else {
-                for (int i = 0; i < indicators.length; i++) {
-                    for (int j = 0; j < indicators.length; j++) {
-                        if (cwList.get(i) == ugList.get(i)){
-                            indicators[turns][i] = "🟩";
-                        } else if (cwList.contains(ugList.get(j))){
-                            int indexNeeded = cwList.indexOf(ugList.get(j));
-                            indicators[turns][indexNeeded] = "🟨";
+                //-------------------Attempt #2----------------------
+                //System.out.println(cwList);
+                for (int i = 0; i < ugChars.length; i++) {
+                        if (cwList.contains(ugList.get(i))) {
+                            if (cwList.get(i) == ugList.get(i)) {
+                                indicators[turns][i] = "🟩";
+                            } else {
+                                indicators[turns][i] = "🟨";
+                            }
                         } else {
-                            indicators[turns][i] = "⬜️";
+                            indicators[turns][i] = "⬜️️";
                         }
-                    }
+
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
         }
-
-    }
+}
 
 
